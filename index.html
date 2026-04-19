@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timotej Legenda</title>
+
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg-secondary: #121821;
+      --card: rgba(255, 255, 255, 0.06);
+      --text: #f5f7fa;
+      --muted: #b8c0cc;
+      --accent: #00ffc3;
+      --accent-dark: #00cfa0;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --radius: 18px;
+      --nav-height: 76px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(0,255,195,0.08), transparent 30%),
+        linear-gradient(180deg, #0b0f14 0%, #111722 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    body.party {
+      animation: hueFlash 1.5s linear infinite;
+    }
+
+    @keyframes hueFlash {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(360deg); }
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-height);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 28px;
+      background: rgba(8, 12, 18, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      padding: 0 20px;
+    }
+
+    nav a {
+      font-weight: 600;
+      color: var(--text);
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    main {
+      padding-top: var(--nav-height);
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 20px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero .container,
+    .about .container,
+    .contact .container {
+      display: grid;
+      gap: 24px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .highlight {
+      color: var(--accent);
+      text-shadow: 0 0 18px rgba(0, 255, 195, 0.35);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #04130f;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .about h2,
+    .gallery h2,
+    .contact h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 14px;
+    }
+
+    .about p,
+    .contact p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .gallery-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .gallery-header p {
+      color: var(--muted);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      box-shadow: var(--shadow);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.07);
+    }
+
+    .gallery-caption {
+      padding: 14px 16px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .contact-box {
+      max-width: 750px;
+      text-align: center;
+    }
+
+    .contact-quote {
+      margin-top: 20px;
+      font-style: italic;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .floating-mode {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 1100;
+      background: var(--accent);
+      color: #07120f;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .floating-mode:hover {
+      transform: scale(1.06);
+      background: var(--accent-dark);
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 20px 40px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        gap: 16px;
+        font-size: 0.95rem;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 14px 12px;
+      }
+
+      main {
+        padding-top: 90px;
+      }
+
+      section {
+        min-height: auto;
+        padding: 70px 16px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#home">Domov</a>
+    <a href="#about">O Timoteju</a>
+    <a href="#gallery">Galerija</a>
+    <a href="#contact">Kontakt</a>
+  </nav>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container">
+        <h1><span class="highlight">Timotej</span> legenda</h1>
+        <p>
+          Največji car, kjerkoli se pojavi. Vedno nasmejan, vedno pripravljen
+          na akcijo in vedno v centru dogajanja.
+        </p>
+
+        <div class="buttons">
+          <a href="#about" class="btn btn-primary">Spoznaj več</a>
+          <a href="#gallery" class="btn btn-secondary">Poglej galerijo</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container about-grid">
+        <div class="card">
+          <h2>Kdo je Timotej?</h2>
+          <p>
+            Timotej ni samo človek — je stanje uma. Legenda med prijatelji,
+            vedno dobre volje, vedno pripravljen na chill, zabavo ali novo
+            dogodivščino.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>100%</strong>
+              energija
+            </div>
+            <div class="stat">
+              <strong>24/7</strong>
+              dobra volja
+            </div>
+            <div class="stat">
+              <strong>∞</strong>
+              legenda status
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Zakaj je poseben?</h2>
+          <p>
+            Ker vedno prinese dobro vzdušje, smeh in motivacijo. Kjer je
+            Timotej, tam ni dolgčasa. To ni navaden profil — to je predstavitev
+            prave legende.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="gallery">
+      <div class="container">
+        <div class="gallery-header">
+          <h2>Galerija</h2>
+          <p>
+            Tukaj lahko dodaš svoje najboljše slike. Zamenjaj
+            <code>slika1.jpg</code>, <code>slika2.jpg</code> in
+            <code>slika3.jpg</code> s pravimi datotekami.
+          </p>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="slika1.jpg" alt="Timotej - slika 1">
+            <div class="gallery-caption">Timotej v akciji</div>
+          </div>
+
+          <div class="gallery-item">
+            <img src="slika2.jpg" alt="Timotej - slika 2">
+            <div class="gallery-caption">Legenda moment</div>
+          </div>
+
+          <div class="gallery-item">
+            <img src="slika3.jpg" alt="Timotej - slika 3">
+            <div class="gallery-caption">Največji car</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <div class="card contact-box">
+          <h2>Kontakt</h2>
+          <p>Instagram: <strong>@timotej_legenda</strong></p>
+          <p class="contact-quote">"Če nisi legenda, kaj sploh delaš?"</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="floating-mode" id="partyBtn">🎉 Timotej mode</button>
+
+  <footer>
+    © 2026 Timotej Legenda. Vse pravice pridržane.
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll("section");
+
+    const revealOnScroll = () => {
+      sections.forEach(section => {
+        const sectionTop = section.getBoundingClientRect().top;
+        const triggerPoint = window.innerHeight - 100;
+
+        if (sectionTop < triggerPoint) {
+          section.classList.add("show");
+        }
+      });
+    };
+
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+
+    const partyBtn = document.getElementById("partyBtn");
+    partyBtn.addEventListener("click", () => {
+      document.body.classList.toggle("party");
+    });
+  </script>
+
+</body>
+</html>
